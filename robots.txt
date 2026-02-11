@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tools.i984.com/sitemap.xml

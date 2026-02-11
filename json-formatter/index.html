@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter & Validator — Free Online Tool | DevToolBox</title>
+  <meta name="description" content="Free online JSON formatter, validator, and minifier. Paste your JSON and instantly format, validate, or compress it. No signup required.">
+  <meta name="keywords" content="json formatter, json validator, json beautifier, json minifier, format json online, pretty print json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../qr-generator/index.html">QR Code</a>
+      <a href="../word-counter/index.html">Word Counter</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>JSON Formatter & Validator</h1>
+    <p class="subtitle">Paste your JSON below to format, validate, or minify it instantly.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <label for="json-input" style="font-weight:600; display:block; margin-bottom:0.5rem;">Input JSON</label>
+    <textarea id="json-input" placeholder='{"name":"John","age":30,"city":"New York"}'></textarea>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="formatJSON()">Format / Beautify</button>
+      <button class="btn btn-secondary" onclick="minifyJSON()">Minify</button>
+      <button class="btn btn-secondary" onclick="validateJSON()">Validate Only</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="status"></div>
+
+    <label style="font-weight:600; display:block; margin-bottom:0.5rem;">Output</label>
+    <div class="output-box" id="json-output">
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
+      <pre id="json-result" style="margin:0;white-space:pre-wrap;"></pre>
+    </div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is JSON?</h2>
+      <p>JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write, and easy for machines to parse and generate. This tool helps you format messy JSON into a readable structure, validate it for errors, or minify it for production use.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Features</h3>
+      <ul style="padding-left:1.5rem;">
+        <li>Format / beautify JSON with proper indentation</li>
+        <li>Minify JSON by removing whitespace</li>
+        <li>Validate JSON and get clear error messages</li>
+        <li>Works 100% in your browser — data never leaves your device</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function formatJSON() {
+      const input = document.getElementById('json-input').value.trim();
+      if (!input) return showStatus('Please paste some JSON first.', 'error');
+      try {
+        const parsed = JSON.parse(input);
+        const formatted = JSON.stringify(parsed, null, 2);
+        document.getElementById('json-result').textContent = formatted;
+        showStatus('✓ Valid JSON — formatted successfully!', 'success');
+      } catch (e) {
+        document.getElementById('json-result').textContent = '';
+        showStatus('✗ Invalid JSON: ' + e.message, 'error');
+      }
+    }
+
+    function minifyJSON() {
+      const input = document.getElementById('json-input').value.trim();
+      if (!input) return showStatus('Please paste some JSON first.', 'error');
+      try {
+        const parsed = JSON.parse(input);
+        const minified = JSON.stringify(parsed);
+        document.getElementById('json-result').textContent = minified;
+        showStatus('✓ Minified! ' + minified.length + ' characters.', 'success');
+      } catch (e) {
+        showStatus('✗ Invalid JSON: ' + e.message, 'error');
+      }
+    }
+
+    function validateJSON() {
+      const input = document.getElementById('json-input').value.trim();
+      if (!input) return showStatus('Please paste some JSON first.', 'error');
+      try {
+        JSON.parse(input);
+        showStatus('✓ Valid JSON!', 'success');
+      } catch (e) {
+        showStatus('✗ Invalid JSON: ' + e.message, 'error');
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('json-input').value = '';
+      document.getElementById('json-result').textContent = '';
+      document.getElementById('status').innerHTML = '';
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('json-result').textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+  </script>
+</body>
+</html>

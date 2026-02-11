@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter — Free Online Character & Word Count Tool | DevToolBox</title>
+  <meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs, and estimate reading time. Perfect for writers, students, and bloggers.">
+  <meta name="keywords" content="word counter, character counter, word count online, character count, reading time calculator, sentence counter">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../qr-generator/index.html">QR Code</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>Word & Character Counter</h1>
+    <p class="subtitle">Count words, characters, sentences, and estimate reading time instantly.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div class="stats-row" id="stats">
+      <div class="stat-card"><div class="number" id="s-words">0</div><div class="label">Words</div></div>
+      <div class="stat-card"><div class="number" id="s-chars">0</div><div class="label">Characters</div></div>
+      <div class="stat-card"><div class="number" id="s-chars-ns">0</div><div class="label">No Spaces</div></div>
+      <div class="stat-card"><div class="number" id="s-sentences">0</div><div class="label">Sentences</div></div>
+      <div class="stat-card"><div class="number" id="s-paragraphs">0</div><div class="label">Paragraphs</div></div>
+      <div class="stat-card"><div class="number" id="s-reading">0m</div><div class="label">Reading Time</div></div>
+    </div>
+
+    <textarea id="text-input" placeholder="Start typing or paste your text here..." oninput="analyze()" style="min-height:250px;font-family:-apple-system,sans-serif;font-size:1rem;"></textarea>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="copyText()">Copy Text</button>
+      <button class="btn btn-secondary" onclick="clearText()">Clear</button>
+      <button class="btn btn-secondary" onclick="toUpper()">UPPERCASE</button>
+      <button class="btn btn-secondary" onclick="toLower()">lowercase</button>
+      <button class="btn btn-secondary" onclick="toTitle()">Title Case</button>
+    </div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">Word Counter Tool</h2>
+      <p>This free word counter tool helps writers, students, and professionals quickly count words, characters, sentences, and paragraphs. It also estimates reading time based on an average reading speed of 200 words per minute and speaking time at 130 words per minute.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Use Cases</h3>
+      <ul style="padding-left:1.5rem;">
+        <li>Check essay and assignment word counts</li>
+        <li>Optimize blog posts and articles for SEO</li>
+        <li>Stay within social media character limits</li>
+        <li>Estimate speech and presentation duration</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function analyze() {
+      const text = document.getElementById('text-input').value;
+
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const chars = text.length;
+      const charsNoSpace = text.replace(/\s/g, '').length;
+      const sentences = text.trim() ? (text.match(/[.!?]+/g) || []).length || (words > 0 ? 1 : 0) : 0;
+      const paragraphs = text.trim() ? text.split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+      const readingMin = Math.ceil(words / 200);
+
+      document.getElementById('s-words').textContent = words;
+      document.getElementById('s-chars').textContent = chars;
+      document.getElementById('s-chars-ns').textContent = charsNoSpace;
+      document.getElementById('s-sentences').textContent = sentences;
+      document.getElementById('s-paragraphs').textContent = paragraphs || (words > 0 ? 1 : 0);
+      document.getElementById('s-reading').textContent = readingMin + 'm';
+    }
+
+    function copyText() {
+      const text = document.getElementById('text-input').value;
+      if (text) navigator.clipboard.writeText(text);
+    }
+
+    function clearText() {
+      document.getElementById('text-input').value = '';
+      analyze();
+    }
+
+    function toUpper() {
+      const el = document.getElementById('text-input');
+      el.value = el.value.toUpperCase();
+    }
+
+    function toLower() {
+      const el = document.getElementById('text-input');
+      el.value = el.value.toLowerCase();
+    }
+
+    function toTitle() {
+      const el = document.getElementById('text-input');
+      el.value = el.value.replace(/\b\w/g, c => c.toUpperCase());
+    }
+  </script>
+</body>
+</html>

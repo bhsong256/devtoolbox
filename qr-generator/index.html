@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator — Free Online Tool | DevToolBox</title>
+  <meta name="description" content="Free online QR code generator. Create QR codes for URLs, text, WiFi networks, or contact info. Download as PNG instantly.">
+  <meta name="keywords" content="qr code generator, create qr code, qr code maker, free qr code, generate qr code online, qr code url">
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../color-converter/index.html">Colors</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>QR Code Generator</h1>
+    <p class="subtitle">Generate QR codes for any text, URL, or WiFi network. Download as PNG.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-bottom:1rem;">
+      <label style="font-weight:600; display:block; margin-bottom:0.5rem;">What type of QR code?</label>
+      <select id="qr-type" onchange="updatePlaceholder()">
+        <option value="text">Text / URL</option>
+        <option value="wifi">WiFi Network</option>
+        <option value="email">Email</option>
+        <option value="phone">Phone Number</option>
+      </select>
+    </div>
+
+    <div id="input-fields">
+      <textarea id="qr-input" placeholder="Enter URL or text here... e.g. https://example.com" style="min-height:80px;"></textarea>
+    </div>
+
+    <div id="wifi-fields" style="display:none;">
+      <input type="text" id="wifi-ssid" placeholder="WiFi Network Name (SSID)" style="margin-bottom:0.5rem;">
+      <input type="text" id="wifi-pass" placeholder="Password" style="margin-bottom:0.5rem;">
+      <select id="wifi-enc" style="margin-bottom:0.5rem;">
+        <option value="WPA">WPA/WPA2</option>
+        <option value="WEP">WEP</option>
+        <option value="nopass">No Password</option>
+      </select>
+    </div>
+
+    <div style="margin:1rem 0;">
+      <label style="font-weight:600; margin-right:1rem;">Size:</label>
+      <select id="qr-size">
+        <option value="200">200 × 200</option>
+        <option value="300" selected>300 × 300</option>
+        <option value="400">400 × 400</option>
+        <option value="500">500 × 500</option>
+      </select>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generateQR()">Generate QR Code</button>
+      <button class="btn btn-secondary" onclick="downloadQR()">Download PNG</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div id="qr-output" style="text-align:center; margin:2rem 0; min-height:100px;"></div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is a QR Code?</h2>
+      <p>A QR (Quick Response) code is a two-dimensional barcode that can store text, URLs, contact information, WiFi credentials, and more. QR codes can be scanned by any smartphone camera and are widely used for payments, marketing, event tickets, and sharing information.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    let qrInstance = null;
+
+    function updatePlaceholder() {
+      const type = document.getElementById('qr-type').value;
+      const textFields = document.getElementById('input-fields');
+      const wifiFields = document.getElementById('wifi-fields');
+
+      if (type === 'wifi') {
+        textFields.style.display = 'none';
+        wifiFields.style.display = 'block';
+      } else {
+        textFields.style.display = 'block';
+        wifiFields.style.display = 'none';
+        const inp = document.getElementById('qr-input');
+        if (type === 'email') inp.placeholder = 'email@example.com';
+        else if (type === 'phone') inp.placeholder = '+1234567890';
+        else inp.placeholder = 'Enter URL or text... e.g. https://example.com';
+      }
+    }
+
+    function getQRData() {
+      const type = document.getElementById('qr-type').value;
+      if (type === 'wifi') {
+        const ssid = document.getElementById('wifi-ssid').value;
+        const pass = document.getElementById('wifi-pass').value;
+        const enc = document.getElementById('wifi-enc').value;
+        if (!ssid) { showStatus('Please enter a WiFi network name.', 'error'); return null; }
+        return 'WIFI:T:' + enc + ';S:' + ssid + ';P:' + pass + ';;';
+      }
+      if (type === 'email') {
+        const email = document.getElementById('qr-input').value.trim();
+        if (!email) { showStatus('Please enter an email address.', 'error'); return null; }
+        return 'mailto:' + email;
+      }
+      if (type === 'phone') {
+        const phone = document.getElementById('qr-input').value.trim();
+        if (!phone) { showStatus('Please enter a phone number.', 'error'); return null; }
+        return 'tel:' + phone;
+      }
+      const text = document.getElementById('qr-input').value.trim();
+      if (!text) { showStatus('Please enter some text or URL.', 'error'); return null; }
+      return text;
+    }
+
+    function generateQR() {
+      const data = getQRData();
+      if (!data) return;
+
+      const size = parseInt(document.getElementById('qr-size').value);
+      const container = document.getElementById('qr-output');
+      container.innerHTML = '';
+
+      try {
+        qrInstance = new QRCode(container, {
+          text: data,
+          width: size,
+          height: size,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+        showStatus('✓ QR code generated!', 'success');
+      } catch (e) {
+        showStatus('✗ Error: ' + e.message, 'error');
+      }
+    }
+
+    function downloadQR() {
+      const canvas = document.querySelector('#qr-output canvas');
+      if (!canvas) return showStatus('Generate a QR code first.', 'error');
+      const link = document.createElement('a');
+      link.download = 'qrcode.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+  </script>
+</body>
+</html>

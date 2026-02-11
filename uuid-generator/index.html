@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator — Free Online UUID v4 Generator | DevToolBox</title>
+  <meta name="description" content="Free online UUID v4 generator. Generate random UUIDs in bulk, copy with one click. Perfect for developers and database design.">
+  <meta name="keywords" content="uuid generator, uuid v4, random uuid, generate uuid online, guid generator, unique id generator">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../color-converter/index.html">Colors</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>UUID Generator</h1>
+    <p class="subtitle">Generate random UUID v4 identifiers. Click to copy any UUID.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap;">
+      <label style="font-weight:600;">How many?</label>
+      <input type="number" id="uuid-count" value="5" min="1" max="100" style="width:100px;">
+      <label style="font-weight:600;">Format:</label>
+      <select id="uuid-format" style="width:160px;">
+        <option value="default">Standard (lowercase)</option>
+        <option value="upper">UPPERCASE</option>
+        <option value="braces">{braces}</option>
+        <option value="nodash">No dashes</option>
+      </select>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="generate()">Generate UUIDs</button>
+      <button class="btn btn-secondary" onclick="copyAll()">Copy All</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="uuid-list" style="margin-top:1rem;"></div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is a UUID?</h2>
+      <p>A UUID (Universally Unique Identifier) is a 128-bit identifier that is unique across time and space. UUID v4 is generated using random numbers, making collisions virtually impossible (1 in 2^122 chance). UUIDs are commonly used as database primary keys, API identifiers, session tokens, and distributed system IDs.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">UUID v4 Format</h3>
+      <p>A standard UUID v4 looks like: <code style="background:#1e293b;padding:0.2rem 0.5rem;border-radius:4px;">550e8400-e29b-41d4-a716-446655440000</code></p>
+      <p style="margin-top:0.5rem;">It consists of 32 hexadecimal characters arranged in 5 groups separated by hyphens: 8-4-4-4-12.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function formatUUID(uuid) {
+      const fmt = document.getElementById('uuid-format').value;
+      if (fmt === 'upper') return uuid.toUpperCase();
+      if (fmt === 'braces') return '{' + uuid + '}';
+      if (fmt === 'nodash') return uuid.replace(/-/g, '');
+      return uuid;
+    }
+
+    function generate() {
+      const count = Math.min(100, Math.max(1, parseInt(document.getElementById('uuid-count').value) || 5));
+      const container = document.getElementById('uuid-list');
+      container.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const uuid = formatUUID(uuidv4());
+        const row = document.createElement('div');
+        row.style.cssText = 'background:#1e293b;border:1px solid #334155;border-radius:8px;padding:0.6rem 1rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:monospace;font-size:0.95rem;';
+        row.innerHTML = '<span>' + uuid + '</span><button class="copy-btn" style="position:static;" onclick="event.stopPropagation();copyOne(this,\'' + uuid + '\')">Copy</button>';
+        row.onclick = function() { copyOne(row.querySelector('button'), uuid); };
+        container.appendChild(row);
+      }
+    }
+
+    function copyOne(btn, uuid) {
+      navigator.clipboard.writeText(uuid);
+      btn.textContent = '✓';
+      setTimeout(() => btn.textContent = 'Copy', 1000);
+    }
+
+    function copyAll() {
+      const uuids = [...document.querySelectorAll('#uuid-list span')].map(s => s.textContent);
+      if (uuids.length === 0) return;
+      navigator.clipboard.writeText(uuids.join('\n'));
+    }
+
+    function clearAll() {
+      document.getElementById('uuid-list').innerHTML = '';
+    }
+
+    // Generate on load
+    generate();
+  </script>
+</body>
+</html>
