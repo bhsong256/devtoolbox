@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="A6FXakE6GdTd7vD4m5iyqKpCfXqE0S4R4zQCfpwSjmw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encode Decode — Free Online Tool | DevToolBox</title>
+  <meta name="description" content="Free online URL encoder and decoder. Encode special characters for URLs or decode percent-encoded strings instantly.">
+  <meta name="keywords" content="url encode, url decode, percent encoding, urlencode online, url encoder decoder">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../color-converter/index.html">Colors</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>URL Encode & Decode</h1>
+    <p class="subtitle">Encode text to URL-safe format or decode percent-encoded strings.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div class="two-col">
+      <div>
+        <label for="url-input" style="font-weight:600; display:block; margin-bottom:0.5rem;">Input</label>
+        <textarea id="url-input" placeholder="Type or paste text here..."></textarea>
+      </div>
+      <div>
+        <label style="font-weight:600; display:block; margin-bottom:0.5rem;">Output</label>
+        <div style="position:relative;">
+          <textarea id="url-output" readonly placeholder="Result will appear here..."></textarea>
+          <button class="copy-btn" style="top:0.5rem;right:0.5rem;position:absolute;" onclick="copyResult()">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="encode()">Encode →</button>
+      <button class="btn btn-primary" onclick="decode()">← Decode</button>
+      <button class="btn btn-secondary" onclick="swap()">⇄ Swap</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is URL Encoding?</h2>
+      <p>URL encoding (also called percent encoding) converts special characters into a format that can be safely transmitted over the internet. Spaces become %20, ampersands become %26, and other special characters are replaced with % followed by their hexadecimal value. It's essential for query parameters, form data, and URLs containing non-ASCII characters.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">How it works</h3>
+      <p>URL encoding replaces unsafe characters with a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space is encoded as %20, an ampersand as %26, and a forward slash as %2F. This ensures URLs remain valid and interpretable across all systems and protocols.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function encode() {
+      const input = document.getElementById('url-input').value;
+      if (!input) return showStatus('Please enter some text to encode.', 'error');
+      try {
+        const encoded = encodeURIComponent(input);
+        document.getElementById('url-output').value = encoded;
+        showStatus('✓ Encoded! ' + encoded.length + ' characters.', 'success');
+      } catch (e) {
+        showStatus('✗ Encoding error: ' + e.message, 'error');
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById('url-input').value.trim();
+      if (!input) return showStatus('Please enter a URL-encoded string to decode.', 'error');
+      try {
+        const decoded = decodeURIComponent(input);
+        document.getElementById('url-output').value = decoded;
+        showStatus('✓ Decoded successfully!', 'success');
+      } catch (e) {
+        showStatus('✗ Invalid URL encoding: ' + e.message, 'error');
+      }
+    }
+
+    function swap() {
+      const inp = document.getElementById('url-input');
+      const out = document.getElementById('url-output');
+      const temp = inp.value;
+      inp.value = out.value;
+      out.value = temp;
+    }
+
+    function clearAll() {
+      document.getElementById('url-input').value = '';
+      document.getElementById('url-output').value = '';
+      document.getElementById('status').innerHTML = '';
+    }
+
+    function copyResult() {
+      const text = document.getElementById('url-output').value;
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="A6FXakE6GdTd7vD4m5iyqKpCfXqE0S4R4zQCfpwSjmw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Minifier & Beautifier — Free Online Tool | DevToolBox</title>
+  <meta name="description" content="Free online CSS minifier and beautifier. Compress CSS to reduce file size or beautify minified CSS for readability.">
+  <meta name="keywords" content="css minifier, css beautifier, minify css online, css compressor, css formatter, compress css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../base64/index.html">Base64</a>
+      <a href="../qr-generator/index.html">QR Code</a>
+      <a href="../word-counter/index.html">Word Counter</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>CSS Minifier & Beautifier</h1>
+    <p class="subtitle">Paste your CSS below to minify, beautify, or compress it instantly.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <label for="css-input" style="font-weight:600; display:block; margin-bottom:0.5rem;">Input CSS</label>
+    <textarea id="css-input" placeholder="body { color: #333; margin: 0; } /* Comment */"></textarea>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="minifyCSS()">Minify</button>
+      <button class="btn btn-secondary" onclick="beautifyCSS()">Beautify</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div id="stats" style="background:#1e293b; padding:1rem; border-radius:0.5rem; margin-bottom:1rem; display:none;">
+      <div style="display:flex; gap:2rem; flex-wrap:wrap; font-size:0.9rem;">
+        <div>
+          <span style="color:#94a3b8;">Original Size:</span> <span id="original-size" style="color:#f1f5f9; font-weight:600;">0 B</span>
+        </div>
+        <div>
+          <span style="color:#94a3b8;">Minified Size:</span> <span id="minified-size" style="color:#f1f5f9; font-weight:600;">0 B</span>
+        </div>
+        <div>
+          <span style="color:#94a3b8;">Savings:</span> <span id="savings" style="color:#10b981; font-weight:600;">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <label style="font-weight:600; display:block; margin-bottom:0.5rem;">Output</label>
+    <div class="output-box" id="css-output">
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
+      <pre id="css-result" style="margin:0;white-space:pre-wrap;"></pre>
+    </div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is CSS Minification?</h2>
+      <p>CSS minification is the process of removing unnecessary characters from CSS code without changing its functionality. This includes removing comments, whitespace, newlines, and semicolons before closing braces. The result is smaller file sizes that load faster. CSS beautification (formatting) adds proper indentation and newlines for readability, which is useful when working with minified CSS from production environments.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Features</h3>
+      <ul style="padding-left:1.5rem;">
+        <li>Minify CSS by removing comments and unnecessary whitespace</li>
+        <li>Beautify minified CSS with proper indentation and formatting</li>
+        <li>Calculate file size savings percentage</li>
+        <li>Works 100% in your browser — data never leaves your device</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function minifyCSS() {
+      const input = document.getElementById('css-input').value;
+      if (!input.trim()) return showStatus('Please paste some CSS first.', 'error');
+
+      try {
+        let minified = input
+          // Remove comments
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          // Remove leading/trailing whitespace
+          .trim()
+          // Remove newlines
+          .replace(/\n+/g, '')
+          // Remove spaces around special characters
+          .replace(/\s*([{};:,>+~])\s*/g, '$1')
+          // Remove trailing semicolon before closing brace
+          .replace(/;(?=})/g, '')
+          // Remove multiple spaces
+          .replace(/\s+/g, ' ')
+          // Final cleanup of spaces around braces
+          .replace(/\s*([{}])\s*/g, '$1');
+
+        const originalSize = input.length;
+        const minifiedSize = minified.length;
+        const savings = Math.round((1 - minifiedSize / originalSize) * 100);
+
+        document.getElementById('css-result').textContent = minified;
+        updateStats(originalSize, minifiedSize, savings);
+        showStatus('✓ Minified successfully! ' + minifiedSize + ' characters.', 'success');
+      } catch (e) {
+        showStatus('✗ Error: ' + e.message, 'error');
+      }
+    }
+
+    function beautifyCSS() {
+      const input = document.getElementById('css-input').value;
+      if (!input.trim()) return showStatus('Please paste some CSS first.', 'error');
+
+      try {
+        let beautified = input
+          // Remove comments
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          // Add newlines before opening braces
+          .replace(/\s*{\s*/g, ' {\n  ')
+          // Add newlines after semicolons (inside blocks)
+          .replace(/;\s*/g, ';\n  ')
+          // Add newlines before closing braces
+          .replace(/\s*}\s*/g, '\n}\n')
+          // Clean up excessive newlines
+          .replace(/\n\s*\n/g, '\n')
+          // Remove trailing whitespace on lines
+          .split('\n')
+          .map(line => line.trimEnd())
+          .join('\n')
+          // Fix indentation
+          .replace(/\n\s+/g, '\n  ')
+          .trim();
+
+        document.getElementById('css-result').textContent = beautified;
+        document.getElementById('stats').style.display = 'none';
+        showStatus('✓ Beautified successfully!', 'success');
+      } catch (e) {
+        showStatus('✗ Error: ' + e.message, 'error');
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('css-input').value = '';
+      document.getElementById('css-result').textContent = '';
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('stats').style.display = 'none';
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('css-result').textContent;
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+
+    function updateStats(original, minified, savings) {
+      document.getElementById('original-size').textContent = formatBytes(original);
+      document.getElementById('minified-size').textContent = formatBytes(minified);
+      document.getElementById('savings').textContent = savings + '%';
+      document.getElementById('stats').style.display = 'block';
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    }
+  </script>
+</body>
+</html>

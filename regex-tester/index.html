@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="A6FXakE6GdTd7vD4m5iyqKpCfXqE0S4R4zQCfpwSjmw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Tester — Test Regular Expressions Online | DevToolBox</title>
+  <meta name="description" content="Free online regex tester. Test and debug regular expressions with real-time matching, capture groups, and match highlighting.">
+  <meta name="keywords" content="regex tester, regular expression tester, regex online, regex debugger, regex match, regex validator">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../qr-generator/index.html">QR Code</a>
+      <a href="../uuid-generator/index.html">UUID</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>Regex Tester</h1>
+    <p class="subtitle">Test and debug regular expressions with real-time matching and highlight.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label for="regex-pattern" style="font-weight:600; display:block; margin-bottom:0.5rem;">Regular Expression</label>
+      <input type="text" id="regex-pattern" placeholder="Enter regex pattern (e.g., \d{3}-\d{4})" value="">
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label style="font-weight:600; display:block; margin-bottom:0.75rem;">Flags</label>
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="flag-g" onchange="updateMatches()">
+          <span>g — Global (all matches)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="flag-i" onchange="updateMatches()">
+          <span>i — Case insensitive</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="flag-m" onchange="updateMatches()">
+          <span>m — Multiline</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="flag-s" onchange="updateMatches()">
+          <span>s — Dotall</span>
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label for="test-string" style="font-weight:600; display:block; margin-bottom:0.5rem;">Test String</label>
+      <textarea id="test-string" placeholder="Enter text to test against the regex pattern..." oninput="updateMatches()"></textarea>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="updateMatches()">Test Pattern</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div style="margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="stat-card">
+        <div class="number" id="match-count">0</div>
+        <div class="label">Matches Found</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="capture-count">0</div>
+        <div class="label">Capture Groups</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <label style="font-weight:600; display:block; margin-bottom:0.75rem;">Test String with Highlights</label>
+      <div id="highlighted-output" class="output-box" style="white-space: pre-wrap; word-break: break-word; font-family: 'SF Mono', 'Fira Code', monospace; min-height: 150px;">
+        Enter a regex pattern and test string to see highlighted matches
+      </div>
+    </div>
+
+    <div id="matches-container" style="margin-top: 1.5rem; display: none;">
+      <label style="font-weight:600; display:block; margin-bottom:0.75rem;">All Matches & Capture Groups</label>
+      <div id="matches-list" class="output-box" style="max-height: 400px; overflow-y: auto; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem;"></div>
+    </div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top: 2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is a Regular Expression?</h2>
+      <p>A regular expression (regex or regexp) is a pattern of characters that defines a search pattern. It's used to match, find, and replace text in strings. Regular expressions are powerful tools in programming and text processing, supported by most modern languages.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Key Features</h3>
+      <ul style="margin-left: 1.5rem; color:#94a3b8;">
+        <li><strong>Global Flag (g)</strong> — Find all matches instead of just the first one</li>
+        <li><strong>Case Insensitive (i)</strong> — Match uppercase and lowercase letters as equivalent</li>
+        <li><strong>Multiline (m)</strong> — Treat ^ and $ as line boundaries, not string boundaries</li>
+        <li><strong>Dotall (s)</strong> — Make . match newline characters</li>
+        <li><strong>Capture Groups</strong> — Use parentheses to extract parts of matched text</li>
+      </ul>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Common Patterns</h3>
+      <ul style="margin-left: 1.5rem; color:#94a3b8;">
+        <li><code style="background:#1e293b; padding:0.25rem 0.5rem; border-radius:4px;">\d+</code> — One or more digits</li>
+        <li><code style="background:#1e293b; padding:0.25rem 0.5rem; border-radius:4px;">[a-z]+</code> — One or more lowercase letters</li>
+        <li><code style="background:#1e293b; padding:0.25rem 0.5rem; border-radius:4px;">\S+</code> — One or more non-whitespace characters</li>
+        <li><code style="background:#1e293b; padding:0.25rem 0.5rem; border-radius:4px;">(\w+)@(\w+)</code> — Email pattern with capture groups</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function getFlags() {
+      let flags = '';
+      if (document.getElementById('flag-g').checked) flags += 'g';
+      if (document.getElementById('flag-i').checked) flags += 'i';
+      if (document.getElementById('flag-m').checked) flags += 'm';
+      if (document.getElementById('flag-s').checked) flags += 's';
+      return flags;
+    }
+
+    function updateMatches() {
+      const patternStr = document.getElementById('regex-pattern').value.trim();
+      const testStr = document.getElementById('test-string').value;
+      const flags = getFlags();
+
+      if (!patternStr) {
+        document.getElementById('highlighted-output').textContent = 'Enter a regex pattern to see highlighted matches';
+        document.getElementById('match-count').textContent = '0';
+        document.getElementById('capture-count').textContent = '0';
+        document.getElementById('matches-container').style.display = 'none';
+        document.getElementById('status').innerHTML = '';
+        return;
+      }
+
+      try {
+        const regex = new RegExp(patternStr, flags);
+        const matches = flags.includes('g') ? [...testStr.matchAll(regex)] : testStr.match(regex) ? [testStr.match(regex)] : [];
+
+        // Update stats
+        document.getElementById('match-count').textContent = matches.length;
+        const captureCount = matches.length > 0 ? (matches[0].length - 1) : 0;
+        document.getElementById('capture-count').textContent = captureCount;
+
+        // Highlight matches
+        if (matches.length > 0) {
+          let highlightedStr = testStr;
+          let offset = 0;
+
+          // Sort by index to avoid position shifts
+          const sortedMatches = [...matches].sort((a, b) => a.index - b.index);
+
+          sortedMatches.forEach(match => {
+            const idx = match.index + offset;
+            const before = highlightedStr.substring(0, idx);
+            const matched = highlightedStr.substring(idx, idx + match[0].length);
+            const after = highlightedStr.substring(idx + match[0].length);
+            const highlighted = `<span style="background-color: #3b82f6; color: white; padding: 2px 4px; border-radius: 3px;">${escapeHtml(matched)}</span>`;
+            highlightedStr = before + highlighted + after;
+            offset += highlighted.length - matched.length;
+          });
+
+          document.getElementById('highlighted-output').innerHTML = escapeHtml(testStr).replace(/(&lt;[^&]*&gt;)/g, '<span style="background-color: #3b82f6; color: white; padding: 2px 4px; border-radius: 3px;">$1</span>');
+
+          // Proper highlighting using a different approach
+          highlightedStr = testStr;
+          const parts = [];
+          let lastIndex = 0;
+
+          sortedMatches.forEach(match => {
+            parts.push({ type: 'text', value: testStr.substring(lastIndex, match.index) });
+            parts.push({ type: 'match', value: match[0], groups: match.slice(1) });
+            lastIndex = match.index + match[0].length;
+          });
+          parts.push({ type: 'text', value: testStr.substring(lastIndex) });
+
+          let html = '';
+          parts.forEach(part => {
+            if (part.type === 'text') {
+              html += escapeHtml(part.value);
+            } else {
+              html += `<span style="background-color: #3b82f6; color: white; padding: 2px 4px; border-radius: 3px;">${escapeHtml(part.value)}</span>`;
+            }
+          });
+          document.getElementById('highlighted-output').innerHTML = html;
+
+          // Display matches list
+          displayMatches(matches);
+          document.getElementById('matches-container').style.display = 'block';
+          showStatus(`✓ Found ${matches.length} match${matches.length !== 1 ? 'es' : ''} with ${captureCount} capture group${captureCount !== 1 ? 's' : ''}.`, 'success');
+        } else {
+          document.getElementById('highlighted-output').textContent = testStr || 'No matches found.';
+          document.getElementById('matches-container').style.display = 'none';
+          showStatus('✗ No matches found.', 'error');
+        }
+      } catch (e) {
+        document.getElementById('highlighted-output').textContent = testStr || 'Error in regex pattern';
+        document.getElementById('matches-container').style.display = 'none';
+        showStatus('✗ Invalid regex: ' + e.message, 'error');
+      }
+    }
+
+    function displayMatches(matches) {
+      const container = document.getElementById('matches-list');
+      container.innerHTML = '';
+
+      matches.forEach((match, idx) => {
+        const div = document.createElement('div');
+        div.style.marginBottom = '1rem';
+        div.style.paddingBottom = '1rem';
+        div.style.borderBottom = '1px solid #334155';
+
+        let html = `<strong>Match ${idx + 1}:</strong> <code style="background:#0f172a; padding:2px 6px; border-radius:3px;">${escapeHtml(match[0])}</code><br>`;
+
+        if (match.length > 1) {
+          html += '<strong>Capture Groups:</strong><br>';
+          match.slice(1).forEach((group, i) => {
+            html += `<code style="background:#0f172a; padding:2px 6px; border-radius:3px; margin-left:1rem;">[$${i + 1}] = ${escapeHtml(group === undefined ? 'undefined' : group)}</code><br>`;
+          });
+        }
+
+        html += `<small style="color:#64748b;">Index: ${match.index}</small>`;
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function clearAll() {
+      document.getElementById('regex-pattern').value = '';
+      document.getElementById('test-string').value = '';
+      document.getElementById('flag-g').checked = false;
+      document.getElementById('flag-i').checked = false;
+      document.getElementById('flag-m').checked = false;
+      document.getElementById('flag-s').checked = false;
+      document.getElementById('highlighted-output').textContent = 'Enter a regex pattern to see highlighted matches';
+      document.getElementById('match-count').textContent = '0';
+      document.getElementById('capture-count').textContent = '0';
+      document.getElementById('matches-container').style.display = 'none';
+      document.getElementById('status').innerHTML = '';
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+
+    // Update on pattern change
+    document.getElementById('regex-pattern').addEventListener('input', updateMatches);
+  </script>
+</body>
+</html>

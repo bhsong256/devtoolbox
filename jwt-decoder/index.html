@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="A6FXakE6GdTd7vD4m5iyqKpCfXqE0S4R4zQCfpwSjmw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Decoder — Decode JSON Web Tokens Online | DevToolBox</title>
+  <meta name="description" content="Free online JWT decoder. Paste a JSON Web Token to decode and inspect its header, payload, and signature.">
+  <meta name="keywords" content="jwt decoder, jwt debugger, decode jwt, json web token decoder, jwt parser, jwt inspector">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .jwt-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .jwt-section {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    .jwt-section h3 {
+      margin-top: 0;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .jwt-header { border-top: 3px solid #ef4444; }
+    .jwt-header h3 { color: #ef4444; }
+    .jwt-payload { border-top: 3px solid #a855f7; }
+    .jwt-payload h3 { color: #a855f7; }
+    .jwt-signature { border-top: 3px solid #3b82f6; }
+    .jwt-signature h3 { color: #3b82f6; }
+    .jwt-content {
+      background: #0f172a;
+      padding: 0.75rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      word-break: break-all;
+      max-height: 300px;
+      overflow-y: auto;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+    }
+    .jwt-info {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #0f172a;
+      border-left: 3px solid #8b5cf6;
+      border-radius: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .jwt-info strong { color: #f1f5f9; }
+    .jwt-status {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    .jwt-status.expired {
+      background: #7f1d1d;
+      color: #fca5a5;
+    }
+    .jwt-status.valid {
+      background: #15803d;
+      color: #86efac;
+    }
+    .jwt-token-input {
+      width: 100%;
+      min-height: 120px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      resize: vertical;
+    }
+    .jwt-token-input::placeholder {
+      color: #64748b;
+    }
+    .jwt-token-input:focus {
+      outline: none;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+    @media (max-width: 1200px) {
+      .jwt-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo">Dev<span>ToolBox</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../json-formatter/index.html">JSON</a>
+      <a href="../qr-generator/index.html">QR Code</a>
+      <a href="../uuid-generator/index.html">UUID</a>
+    </nav>
+  </header>
+
+  <div class="container tool-page">
+    <h1>JWT Decoder</h1>
+    <p class="subtitle">Paste a JSON Web Token to decode and inspect its header, payload, and signature.</p>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div>
+      <label for="jwt-input" style="font-weight:600; display:block; margin-bottom:0.5rem;">JWT Token</label>
+      <textarea id="jwt-input" class="jwt-token-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ" oninput="decodeJWT()"></textarea>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <button class="btn btn-primary" onclick="decodeJWT()">Decode Token</button>
+      <button class="btn btn-secondary" onclick="clearJWT()" style="margin-left:0.5rem;">Clear</button>
+    </div>
+
+    <div id="jwt-status"></div>
+
+    <div id="jwt-output" class="jwt-container" style="display:none;">
+      <div class="jwt-section jwt-header">
+        <h3>Header</h3>
+        <div id="jwt-header-content" class="jwt-content"></div>
+      </div>
+      <div class="jwt-section jwt-payload">
+        <h3>Payload</h3>
+        <div id="jwt-payload-content" class="jwt-content"></div>
+        <div id="jwt-expiration"></div>
+      </div>
+      <div class="jwt-section jwt-signature">
+        <h3>Signature</h3>
+        <div id="jwt-signature-content" class="jwt-content"></div>
+      </div>
+    </div>
+
+    <div class="ad-slot">📢 Ad Space</div>
+
+    <div style="margin-top:2rem; color:#94a3b8;">
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is JWT?</h2>
+      <p>JWT (JSON Web Token) is a compact, URL-safe means of representing claims to be transferred between two parties. It consists of three parts separated by dots: the header (algorithm and type), the payload (claims/data), and the signature (for verification). JWTs are commonly used for authentication and authorization in modern web applications.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Token Structure</h3>
+      <p>A JWT has three parts: <strong>Header.Payload.Signature</strong>. The header specifies the algorithm used (e.g., HS256). The payload contains the claims (standard claims include <strong>iss</strong>, <strong>sub</strong>, <strong>aud</strong>, <strong>exp</strong>, <strong>iat</strong>). The signature ensures the token hasn't been tampered with and can only be verified by the issuer.</p>
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Common Claims</h3>
+      <p><strong>exp</strong> (expiration time) – When the token expires. <strong>iat</strong> (issued at) – When the token was created. <strong>sub</strong> (subject) – Who the token is about. <strong>aud</strong> (audience) – Who the token is intended for.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
+  </footer>
+
+  <script>
+    function decodeJWT() {
+      const token = document.getElementById('jwt-input').value.trim();
+      const statusDiv = document.getElementById('jwt-status');
+      const outputDiv = document.getElementById('jwt-output');
+
+      if (!token) {
+        statusDiv.innerHTML = '';
+        outputDiv.style.display = 'none';
+        return;
+      }
+
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+          throw new Error('Invalid JWT format. Token must have 3 parts separated by dots.');
+        }
+
+        // Decode header
+        const headerJSON = decodeBase64Url(parts[0]);
+        const header = JSON.parse(headerJSON);
+
+        // Decode payload
+        const payloadJSON = decodeBase64Url(parts[1]);
+        const payload = JSON.parse(payloadJSON);
+
+        // Signature (just show the encoded version)
+        const signature = parts[2];
+
+        // Display results
+        document.getElementById('jwt-header-content').textContent = JSON.stringify(header, null, 2);
+        document.getElementById('jwt-payload-content').textContent = JSON.stringify(payload, null, 2);
+        document.getElementById('jwt-signature-content').textContent = signature;
+
+        // Handle expiration
+        const expirationDiv = document.getElementById('jwt-expiration');
+        if (payload.exp) {
+          const expDate = new Date(payload.exp * 1000);
+          const now = new Date();
+          const isExpired = expDate < now;
+          const expirationStatus = isExpired ? 'expired' : 'valid';
+
+          expirationDiv.innerHTML = `<div class="jwt-status ${expirationStatus}">
+            ${isExpired ? '✗ Expired' : '✓ Valid'} — Expires: ${expDate.toLocaleString()}
+          </div>`;
+        } else {
+          expirationDiv.innerHTML = '<div class="jwt-info"><strong>Note:</strong> No expiration time (exp claim) found in payload.</div>';
+        }
+
+        outputDiv.style.display = 'grid';
+        statusDiv.innerHTML = '<div class="status status-success">✓ JWT decoded successfully!</div>';
+      } catch (e) {
+        outputDiv.style.display = 'none';
+        statusDiv.innerHTML = '<div class="status status-error">✗ Decoding error: ' + e.message + '</div>';
+      }
+    }
+
+    function decodeBase64Url(str) {
+      // Convert base64url to base64
+      let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+      // Add padding if needed
+      const padding = 4 - (base64.length % 4);
+      if (padding !== 4) {
+        base64 += '='.repeat(padding);
+      }
+      // Decode
+      return decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    }
+
+    function clearJWT() {
+      document.getElementById('jwt-input').value = '';
+      document.getElementById('jwt-status').innerHTML = '';
+      document.getElementById('jwt-output').style.display = 'none';
+    }
+
+    function showStatus(msg, type) {
+      document.getElementById('jwt-status').innerHTML =
+        '<div class="status status-' + type + '">' + msg + '</div>';
+    }
+  </script>
+</body>
+</html>
