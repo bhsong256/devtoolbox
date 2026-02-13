@@ -7,6 +7,11 @@
   <title>Markdown Preview — Live Markdown Editor Online | DevToolBox</title>
   <meta name="description" content="Free online Markdown preview editor. Write Markdown and see the rendered HTML in real-time. No signup required.">
   <meta name="keywords" content="markdown preview, markdown editor online, markdown to html, live markdown, markdown renderer">
+  <meta property="og:title" content="Markdown Preview — Live Markdown Editor Online | DevToolBox">
+  <meta property="og:description" content="Free online Markdown preview editor. Write Markdown and see the rendered HTML in real-time. No signup required.">
+  <meta property="og:url" content="https://tools.i984.com/markdown-preview/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -104,6 +109,15 @@ Horizontal rules separate content.</textarea>
         <li>Download your Markdown as a .md file</li>
         <li>Works 100% in your browser — data never leaves your device</li>
       </ul>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../word-counter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Word Counter</a>
+        <a href="../css-minifier/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">CSS Minifier</a>
+        <a href="../lorem-ipsum/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Lorem Ipsum</a>
+      </div>
     </div>
   </div>
 
@@ -314,6 +328,19 @@ Horizontal rules separate content.</textarea>
 
     // Initialize on page load
     window.addEventListener('DOMContentLoaded', initializePreview);
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Markdown Preview",
+    "description": "Free online Markdown preview editor. Write Markdown and see the rendered HTML in real-time. No signup required.",
+    "url": "https://tools.i984.com/markdown-preview/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

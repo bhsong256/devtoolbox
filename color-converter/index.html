@@ -7,6 +7,11 @@
   <title>Color Converter — HEX RGB HSL Converter | DevToolBox</title>
   <meta name="description" content="Free online color converter. Convert between HEX, RGB, and HSL color formats instantly. Includes live color preview and one-click copy.">
   <meta name="keywords" content="color converter, hex to rgb, rgb to hex, hsl to hex, hex to hsl, color picker, css color converter">
+  <meta property="og:title" content="Color Converter — HEX RGB HSL Converter | DevToolBox">
+  <meta property="og:description" content="Free online color converter. Convert between HEX, RGB, and HSL color formats instantly. Includes live color preview and one-click copy.">
+  <meta property="og:url" content="https://tools.i984.com/color-converter/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -66,6 +71,15 @@
       <p><strong style="color:#e2e8f0;">HEX</strong> — A 6-character hexadecimal code preceded by # (e.g., #3b82f6). Most common in CSS and web design.</p>
       <p style="margin-top:0.5rem;"><strong style="color:#e2e8f0;">RGB</strong> — Red, Green, Blue values from 0-255 (e.g., rgb(59, 130, 246)). Used in CSS and image editing.</p>
       <p style="margin-top:0.5rem;"><strong style="color:#e2e8f0;">HSL</strong> — Hue (0-360°), Saturation (0-100%), Lightness (0-100%). Intuitive for designers.</p>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../css-minifier/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">CSS Minifier</a>
+        <a href="../qr-generator/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">QR Code Generator</a>
+        <a href="../markdown-preview/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Markdown Preview</a>
+      </div>
     </div>
   </div>
 
@@ -204,6 +218,19 @@
 
     // Init
     fromHex();
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Color Converter",
+    "description": "Free online color converter. Convert between HEX, RGB, and HSL color formats instantly. Includes live color preview and one-click copy.",
+    "url": "https://tools.i984.com/color-converter/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

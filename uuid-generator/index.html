@@ -7,6 +7,11 @@
   <title>UUID Generator — Free Online UUID v4 Generator | DevToolBox</title>
   <meta name="description" content="Free online UUID v4 generator. Generate random UUIDs in bulk, copy with one click. Perfect for developers and database design.">
   <meta name="keywords" content="uuid generator, uuid v4, random uuid, generate uuid online, guid generator, unique id generator">
+  <meta property="og:title" content="UUID Generator — Free Online UUID v4 Generator | DevToolBox">
+  <meta property="og:description" content="Free online UUID v4 generator. Generate random UUIDs in bulk, copy with one click. Perfect for developers and database design.">
+  <meta property="og:url" content="https://tools.i984.com/uuid-generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -54,6 +59,15 @@
       <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">UUID v4 Format</h3>
       <p>A standard UUID v4 looks like: <code style="background:#1e293b;padding:0.2rem 0.5rem;border-radius:4px;">550e8400-e29b-41d4-a716-446655440000</code></p>
       <p style="margin-top:0.5rem;">It consists of 32 hexadecimal characters arranged in 5 groups separated by hyphens: 8-4-4-4-12.</p>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../hash-generator/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Hash Generator</a>
+        <a href="../timestamp/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Timestamp Converter</a>
+        <a href="../json-formatter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">JSON Formatter</a>
+      </div>
     </div>
   </div>
 
@@ -111,6 +125,19 @@
 
     // Generate on load
     generate();
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "UUID Generator",
+    "description": "Free online UUID v4 generator. Generate random UUIDs in bulk, copy with one click. Perfect for developers and database design.",
+    "url": "https://tools.i984.com/uuid-generator/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

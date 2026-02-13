@@ -7,6 +7,11 @@
   <title>Word Counter — Free Online Character & Word Count Tool | DevToolBox</title>
   <meta name="description" content="Free online word counter. Count words, characters, sentences, paragraphs, and estimate reading time. Perfect for writers, students, and bloggers.">
   <meta name="keywords" content="word counter, character counter, word count online, character count, reading time calculator, sentence counter">
+  <meta property="og:title" content="Word Counter — Free Online Character & Word Count Tool | DevToolBox">
+  <meta property="og:description" content="Free online word counter. Count words, characters, sentences, paragraphs, and estimate reading time. Perfect for writers, students, and bloggers.">
+  <meta property="og:url" content="https://tools.i984.com/word-counter/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -58,6 +63,15 @@
         <li>Estimate speech and presentation duration</li>
       </ul>
     </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../lorem-ipsum/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Lorem Ipsum</a>
+        <a href="../markdown-preview/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Markdown Preview</a>
+        <a href="../json-formatter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">JSON Formatter</a>
+      </div>
+    </div>
   </div>
 
   <footer class="site-footer">
@@ -107,6 +121,19 @@
       const el = document.getElementById('text-input');
       el.value = el.value.replace(/\b\w/g, c => c.toUpperCase());
     }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word & Character Counter",
+    "description": "Free online word counter. Count words, characters, sentences, paragraphs, and estimate reading time. Perfect for writers, students, and bloggers.",
+    "url": "https://tools.i984.com/word-counter/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

@@ -7,6 +7,11 @@
   <title>CSS Minifier & Beautifier — Free Online Tool | DevToolBox</title>
   <meta name="description" content="Free online CSS minifier and beautifier. Compress CSS to reduce file size or beautify minified CSS for readability.">
   <meta name="keywords" content="css minifier, css beautifier, minify css online, css compressor, css formatter, compress css">
+  <meta property="og:title" content="CSS Minifier & Beautifier — Free Online Tool | DevToolBox">
+  <meta property="og:description" content="Free online CSS minifier and beautifier. Compress CSS to reduce file size or beautify minified CSS for readability.">
+  <meta property="og:url" content="https://tools.i984.com/css-minifier/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -69,6 +74,15 @@
         <li>Calculate file size savings percentage</li>
         <li>Works 100% in your browser — data never leaves your device</li>
       </ul>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../json-formatter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">JSON Formatter</a>
+        <a href="../markdown-preview/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Markdown Preview</a>
+        <a href="../color-converter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Color Converter</a>
+      </div>
     </div>
   </div>
 
@@ -177,6 +191,19 @@
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
     }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CSS Minifier & Beautifier",
+    "description": "Free online CSS minifier and beautifier. Compress CSS to reduce file size or beautify minified CSS for readability.",
+    "url": "https://tools.i984.com/css-minifier/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

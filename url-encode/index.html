@@ -7,6 +7,11 @@
   <title>URL Encode Decode — Free Online Tool | DevToolBox</title>
   <meta name="description" content="Free online URL encoder and decoder. Encode special characters for URLs or decode percent-encoded strings instantly.">
   <meta name="keywords" content="url encode, url decode, percent encoding, urlencode online, url encoder decoder">
+  <meta property="og:title" content="URL Encode Decode — Free Online Tool | DevToolBox">
+  <meta property="og:description" content="Free online URL encoder and decoder. Encode special characters for URLs or decode percent-encoded strings instantly.">
+  <meta property="og:url" content="https://tools.i984.com/url-encode/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -56,6 +61,15 @@
       <p>URL encoding (also called percent encoding) converts special characters into a format that can be safely transmitted over the internet. Spaces become %20, ampersands become %26, and other special characters are replaced with % followed by their hexadecimal value. It's essential for query parameters, form data, and URLs containing non-ASCII characters.</p>
       <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">How it works</h3>
       <p>URL encoding replaces unsafe characters with a percent sign (%) followed by two hexadecimal digits representing the character's ASCII code. For example, a space is encoded as %20, an ampersand as %26, and a forward slash as %2F. This ensures URLs remain valid and interpretable across all systems and protocols.</p>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../base64/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Base64 Encoder</a>
+        <a href="../regex-tester/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Regex Tester</a>
+        <a href="../json-formatter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">JSON Formatter</a>
+      </div>
     </div>
   </div>
 
@@ -115,6 +129,19 @@
       document.getElementById('status').innerHTML =
         '<div class="status status-' + type + '">' + msg + '</div>';
     }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URL Encode & Decode",
+    "description": "Free online URL encoder and decoder. Encode special characters for URLs or decode percent-encoded strings instantly.",
+    "url": "https://tools.i984.com/url-encode/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>

@@ -7,6 +7,11 @@
   <title>Unix Timestamp Converter — Free Online Tool | DevToolBox</title>
   <meta name="description" content="Convert Unix timestamps to human-readable dates and vice versa. Support for seconds and milliseconds. Free online epoch converter.">
   <meta name="keywords" content="unix timestamp converter, epoch converter, timestamp to date, date to timestamp, unix time, epoch time">
+  <meta property="og:title" content="Unix Timestamp Converter — Free Online Tool | DevToolBox">
+  <meta property="og:description" content="Convert Unix timestamps to human-readable dates and vice versa. Support for seconds and milliseconds. Free online epoch converter.">
+  <meta property="og:url" content="https://tools.i984.com/timestamp/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DevToolBox">
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -100,6 +105,15 @@
       <p>Unix timestamps are widely used in databases, APIs, logging systems, and scheduling applications. They're timezone-independent, making them ideal for storing and comparing times across different locations.</p>
       <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Seconds vs Milliseconds</h3>
       <p>Most Unix timestamps use seconds (e.g., 1704067200), but JavaScript and some modern systems use milliseconds (e.g., 1704067200000). This tool supports both formats—toggle the checkbox to switch between them.</p>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #334155;">
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin-bottom:1rem;">Related Tools</h3>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="../uuid-generator/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">UUID Generator</a>
+        <a href="../hash-generator/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">Hash Generator</a>
+        <a href="../json-formatter/index.html" style="background:#1e293b; padding:0.75rem 1rem; border-radius:8px; border:1px solid #334155; color:#60a5fa; text-decoration:none;">JSON Formatter</a>
+      </div>
     </div>
   </div>
 
@@ -230,6 +244,19 @@
     // Initialize on page load
     updateCurrentTimestamp();
     setInterval(updateCurrentTimestamp, 1000);
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unix Timestamp Converter",
+    "description": "Convert Unix timestamps to human-readable dates and vice versa. Support for seconds and milliseconds. Free online epoch converter.",
+    "url": "https://tools.i984.com/timestamp/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
   </script>
 </body>
 </html>
