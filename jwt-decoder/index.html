@@ -152,10 +152,76 @@
     <div class="ad-slot">📢 Ad Space</div>
 
     <div style="margin-top:2rem; color:#94a3b8;">
-      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is JWT?</h2>
-      <p>JWT (JSON Web Token) is a compact, URL-safe means of representing claims to be transferred between two parties. It consists of three parts separated by dots: the header (algorithm and type), the payload (claims/data), and the signature (for verification). JWTs are commonly used for authentication and authorization in modern web applications.</p>
+      <h2 style="color:#f1f5f9; font-size:1.25rem; margin-bottom:1rem;">What is JWT (JSON Web Token)?</h2>
+      <p>JWT (JSON Web Token) is a standardized, compact, and URL-safe method for securely transmitting claims and data between two parties over HTTP. A JWT encodes information into a self-contained token that can be verified and trusted because it's digitally signed. JWTs have become the standard for stateless authentication and authorization in modern web applications, microservices, and APIs. Unlike traditional session-based authentication where the server maintains session state in a database, JWTs allow stateless authentication—the server doesn't need to store session information because all necessary information is encoded in the token itself and verified using cryptographic signatures. This makes JWTs particularly useful for distributed systems, mobile applications, and single-page applications where server-side session management becomes complicated or impossible.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">JWT Structure and Components</h3>
+      <p>A JWT consists of three parts separated by periods: <strong>Header.Payload.Signature</strong>, visible as a string like `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U`.</p>
+      <p><strong>Header:</strong> The first section, base64url-encoded, contains metadata about the token. Typically it includes `"alg"` (the cryptographic algorithm used to sign the token, like HS256, RS256, or ES256) and `"typ"` (usually "JWT"). For example: `{"alg":"HS256","typ":"JWT"}`.</p>
+      <p><strong>Payload:</strong> The second section contains the claims—statements about an entity and additional metadata. This is where user information, permissions, and other application-specific data live. For example: `{"sub":"1234567890","name":"John Doe","iat":1516239022,"exp":1516242622}`. The payload is base64url-encoded but NOT encrypted, so never put sensitive data like passwords in JWTs.</p>
+      <p><strong>Signature:</strong> The third section is the cryptographic signature created by signing the encoded header and payload with a secret key (for HMAC algorithms) or private key (for RSA/ECDSA algorithms). The signature verifies that the token hasn't been tampered with and that it was issued by a trusted authority. The signature is what makes JWTs secure and trustworthy.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Standard JWT Claims Explained</h3>
+      <p><strong>iss (issuer):</strong> Who created and signed the token. Usually a URL or service name, e.g., "https://auth.example.com". Verifying this claim ensures the token came from a trusted authority.</p>
+      <p><strong>sub (subject):</strong> The entity the token represents, typically the user ID. For example, "user-12345" or "admin@example.com". This identifies who the token is about.</p>
+      <p><strong>aud (audience):</strong> Who the token is intended for. Typically the API or service that should accept the token, e.g., "api.example.com". This prevents a token issued for one service from being used with another.</p>
+      <p><strong>exp (expiration time):</strong> When the token expires, as a Unix timestamp in seconds. For example, 1735689600 (January 1, 2025). Tokens past this time are invalid and rejected. Essential for security—tokens are temporary credentials.</p>
+      <p><strong>iat (issued at):</strong> When the token was created, as a Unix timestamp. For example, 1735603200. Useful for tracking token age and refresh strategies.</p>
+      <p><strong>nbf (not before):</strong> The token is not valid before this time. Allows scheduling tokens to become active in the future. Expressed as Unix timestamp.</p>
+      <p><strong>jti (JWT ID):</strong> Unique identifier for this specific token instance. Useful for token revocation lists—if a JWT is compromised, its jti can be added to a blacklist.</p>
+      <p><strong>Custom claims:</strong> Applications add their own claims for application-specific data. Examples: "role": "admin", "permissions": ["read", "write"], "organization_id": 42. Custom claims should be namespaced to avoid collisions.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">How to Use This Tool</h3>
+      <ol style="padding-left:1.5rem;">
+        <li><strong>Obtain a JWT:</strong> Get a JWT from your authentication server, API, or login endpoint. It's a long string of characters separated by two periods.</li>
+        <li><strong>Paste the token:</strong> Copy your complete JWT token and paste it into the textarea. The default example can help you understand the format.</li>
+        <li><strong>Decode the token:</strong> Click "Decode Token" or the token decodes automatically as you type. The three components appear in separate sections below.</li>
+        <li><strong>Inspect the header:</strong> View which cryptographic algorithm and token type are specified. HS256 uses HMAC with SHA-256, RS256 uses RSA, etc.</li>
+        <li><strong>Examine the payload:</strong> See all the claims including expiration time, user information, and application-specific data. Note that this data is base64url-encoded but NOT encrypted.</li>
+        <li><strong>Check expiration:</strong> The tool shows whether the token is currently valid or expired based on the exp claim and current time.</li>
+        <li><strong>Note the signature:</strong> The signature (third component) is displayed in its base64url-encoded form. You cannot verify the signature here—only the issuer with the correct secret or public key can verify it.</li>
+      </ol>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Common Use Cases and Authentication Flows</h3>
+      <p><strong>API Authentication:</strong> A client application exchanges credentials (username/password or OAuth 2.0) with an authentication server. The server returns a JWT. The client includes this JWT in the Authorization header (`Authorization: Bearer <token>`) for subsequent API requests. The API server verifies the signature and grants access based on the token's claims.</p>
+      <p><strong>Single Sign-On (SSO):</strong> When a user logs into a central authentication provider, they receive a JWT. This token works across multiple applications and services without re-authenticating. Each application independently verifies the token signature using the provider's public key, enabling distributed authentication.</p>
+      <p><strong>Microservices Authorization:</strong> In microservices architectures, a frontend service receives a JWT after user login. When the frontend needs to call backend microservices, it forwards the same JWT. Each microservice independently verifies the token without consulting a central session store, enabling true horizontal scaling.</p>
+      <p><strong>Mobile App Authentication:</strong> Mobile applications store JWTs securely (in secure storage, not localStorage). The JWT allows the app to call backend APIs without maintaining server-side sessions. The JWT persists across app restarts, and refreshing the token is handled automatically on the client side.</p>
+      <p><strong>Third-Party API Access:</strong> Services issue JWTs to third-party developers. The JWT grants scoped access (claims limit what actions are allowed) without exposing credentials. The issuer can revoke access by invalidating the JWT without the third party needing to change their code.</p>
+      <p><strong>OAuth 2.0 Integration:</strong> OAuth 2.0 authorization servers issue JWTs as access tokens. The JWT encodes authorization information allowing resource servers to make independent authorization decisions without consulting the authorization server for every request.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">JWT Security Considerations and Best Practices</h3>
+      <p><strong>Payload is not encrypted:</strong> Base64url encoding is NOT encryption. Anyone can decode a JWT and read the payload. Never put passwords, API keys, credit card numbers, or PII in JWT payloads. If you need encryption, apply it before creating the JWT or use JWE (JSON Web Encryption).</p>
+      <p><strong>Verify the signature:</strong> A JWT is only as trustworthy as its signature. Always verify the signature using the issuer's public key or secret key. Don't blindly trust the header's claimed algorithm—an attacker might claim HS256 when the key is meant for RS256. Use libraries that verify signatures correctly.</p>
+      <p><strong>Check expiration:</strong> Always verify the exp claim. Accepting expired tokens defeats the purpose of token expiration. Set reasonable expiration times—typically 15 minutes for access tokens and longer for refresh tokens.</p>
+      <p><strong>Use HTTPS always:</strong> JWTs in headers are visible to network monitors. Always use HTTPS to prevent interception. Sending JWTs over HTTP exposes them to man-in-the-middle attacks.</p>
+      <p><strong>Secure token storage:</strong> On the client side, store tokens securely. In browsers, HttpOnly, Secure, SameSite cookies are safer than localStorage (which is vulnerable to XSS). In mobile apps, use secure storage provided by the platform.</p>
+      <p><strong>Token rotation and refresh:</strong> Don't use the same JWT forever. Implement refresh token flows: short-lived access tokens (15 minutes) and longer-lived refresh tokens (days or weeks). When an access token expires, use the refresh token to get a new access token.</p>
+      <p><strong>Implement token revocation:</strong> Maintain a blacklist of revoked jti values for compromised or invalidated tokens. This prevents an attacker from using a stolen token for its full expiration period.</p>
+      <p><strong>Algorithm security:</strong> Use strong algorithms. HS256 (HMAC-SHA256) is simpler for symmetric scenarios. RS256, ES256, or PS256 are better for distributed systems where different parties verify tokens. Avoid the "none" algorithm—it's insecure.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Frequently Asked Questions</h3>
+      <p><strong>Q: Is JWT the same as OAuth 2.0?</strong> A: No. OAuth 2.0 is an authorization framework. JWT is a token format. OAuth 2.0 can use JWTs as access tokens, but doesn't require them. They work well together but serve different purposes.</p>
+      <p><strong>Q: Can I trust a JWT without verifying the signature?</strong> A: No. An attacker can modify the payload and re-sign the JWT with their own key, creating a fake token. You must verify the signature using the issuer's secret or public key to confirm the token is genuine.</p>
+      <p><strong>Q: What's the difference between access tokens and refresh tokens?</strong> A: Access tokens are short-lived (15 minutes) and grant access to resources. Refresh tokens are long-lived (days/weeks) and only refresh access tokens. If an access token is stolen, it's valid for only 15 minutes. Refresh tokens are stored more securely.</p>
+      <p><strong>Q: Can I manually create a valid JWT?</strong> A: You can create the header and payload, but you cannot create a valid signature without knowing the secret or private key. If you're testing, you can sign JWTs using jwt.io or libraries, but in production the issuer must sign them.</p>
+      <p><strong>Q: What happens when a JWT expires?</strong> A: The token becomes invalid. Any service verifying the token will reject it based on the exp claim. The client must use a refresh token to obtain a new access token, or re-authenticate.</p>
+      <p><strong>Q: Can JWT be used for sessions instead of cookies?</strong> A: Conceptually yes, but with tradeoffs. JWTs avoid server-side session storage (scalability benefit), but the client must handle token storage securely. Cookies with HttpOnly flag are often safer. It depends on your architecture.</p>
+
+      <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Tips and Best Practices</h3>
+      <ul style="padding-left:1.5rem;">
+        <li><strong>Always use HTTPS:</strong> JWTs transmitted over HTTP are exposed. HTTPS is mandatory for any authentication system using JWTs.</li>
+        <li><strong>Set reasonable expiration times:</strong> Balance security (short expiration) with user experience (not constantly re-authenticating). 15 minutes for access tokens is common.</li>
+        <li><strong>Use strong secrets:</strong> For HMAC algorithms, use cryptographically random secrets of at least 32 bytes. Weak secrets are vulnerable to brute force attacks.</li>
+        <li><strong>Namespace custom claims:</strong> Prefix custom claims with your organization (e.g., "com.example.role") to avoid collisions with standard claims or other organizations' claims.</li>
+        <li><strong>Implement proper verification:</strong> Use established JWT libraries (jsonwebtoken for Node.js, PyJWT for Python, etc.). Don't implement JWT verification yourself—cryptographic bugs are easy to introduce.</li>
+        <li><strong>Handle token refresh gracefully:</strong> Implement retry logic that automatically refreshes tokens when expired and retries the failed request transparently to the user.</li>
+        <li><strong>Monitor token usage:</strong> Log token creation and validation. Unusual patterns (tokens from strange IPs, unusually frequent refreshes) might indicate account compromise.</li>
+      </ul>
+
       <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Token Structure</h3>
       <p>A JWT has three parts: <strong>Header.Payload.Signature</strong>. The header specifies the algorithm used (e.g., HS256). The payload contains the claims (standard claims include <strong>iss</strong>, <strong>sub</strong>, <strong>aud</strong>, <strong>exp</strong>, <strong>iat</strong>). The signature ensures the token hasn't been tampered with and can only be verified by the issuer.</p>
+
       <h3 style="color:#f1f5f9; font-size:1.1rem; margin:1rem 0 0.5rem;">Common Claims</h3>
       <p><strong>exp</strong> (expiration time) – When the token expires. <strong>iat</strong> (issued at) – When the token was created. <strong>sub</strong> (subject) – Who the token is about. <strong>aud</strong> (audience) – Who the token is intended for.</p>
     </div>
@@ -170,9 +236,7 @@
     </div>
   </div>
 
-  <footer class="site-footer">
-    <p>© 2026 DevToolBox — <a href="../index.html">More free tools</a></p>
-  </footer>
+  <footer class="site-footer"><p>© 2026 DevToolBox — <a href="../index.html">More free tools</a> | <a href="../about/index.html">About</a> | <a href="../contact/index.html">Contact</a> | <a href="../privacy/index.html">Privacy Policy</a></p></footer>
 
   <script>
     function decodeJWT() {
